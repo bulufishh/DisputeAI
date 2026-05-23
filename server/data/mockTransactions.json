@@ -1,0 +1,60 @@
+{
+  "user": {
+    "name": "Amirah binti Razak",
+    "account": "BISLM-****3842",
+    "balance": 3247.80
+  },
+  "transactions": [
+    {
+      "id": "TXN001",
+      "merchant": "SG Trader 88",
+      "amount": -2400.00,
+      "time": "2026-04-27T09:38:00",
+      "method": "QR Pay",
+      "ref": "BISLM2604270938AA",
+      "flagged": true,
+      "flagReason": "first_time_unregistered_merchant",
+      "riskLevel": "high"
+    },
+    {
+      "id": "TXN002",
+      "merchant": "MyNews Holdings",
+      "amount": -12.50,
+      "time": "2026-04-27T09:20:00",
+      "method": "DuitNow",
+      "ref": "BISLM2604270920BB",
+      "flagged": false,
+      "riskLevel": "low"
+    },
+    {
+      "id": "TXN003",
+      "merchant": "McDonald's IOI City",
+      "amount": -23.90,
+      "time": "2026-04-27T08:55:00",
+      "method": "QR Pay",
+      "ref": "BISLM2604270855CC",
+      "flagged": false,
+      "riskLevel": "low"
+    },
+    {
+      "id": "TXN004",
+      "merchant": "Salary — ABC Sdn Bhd",
+      "amount": 3500.00,
+      "time": "2026-04-26T09:00:00",
+      "method": "Bank Transfer",
+      "ref": "BISLM2604260900DD",
+      "flagged": false,
+      "riskLevel": "low"
+    },
+    {
+      "id": "TXN005",
+      "merchant": "Shopee Malaysia",
+      "amount": -89.00,
+      "time": "2026-04-26T14:30:00",
+      "method": "Online",
+      "ref": "BISLM2604261430EE",
+      "flagged": false,
+      "riskLevel": "low"
+    }
+  ]
+}
