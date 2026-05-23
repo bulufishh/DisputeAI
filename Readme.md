@@ -1,4 +1,4 @@
-## **STACK**   
+#### **STACK**   
 Front end - Netlify (static)
 BAckend - Netlify functions (severless express)
 Ai chat - Google Gemni 2.0 Flash
@@ -6,7 +6,7 @@ OCR - Google cloud Vision API
 Database - Supabase
 
 
-**SETUP STEPS**   
+#### **SETUP STEPS**   
 Prerequisite  
 - Node.js installed on your machine (v18 or above)
 
@@ -61,7 +61,7 @@ npm start
 
 
 
-**API ROUTES**
+#### **API ROUTES**
 GET   /api/health --> checks all services are connected   
 GET   /api/transactions --> Mock Be U Transaction data    
 POST  /api/chat  --> Gemini AI conversation    
@@ -72,7 +72,7 @@ POST  /api/notify  --> Save wrong tarnsfer notification
 
 
 
-**Technology Used**
+#### **Technology Used**
 Frontend    
 	•	Vanilla HTML, CSS, and JavaScript — no frameworks, no build step required  
 	•	jsPDF (CDN) — generates downloadable PDF dispute reports in the browser  
@@ -93,7 +93,7 @@ Netlify — hosts the frontend as static files and the backend as serverless fun
 
 
 
-**HOW THE SYSTEM US BUILT**。
+#### **HOW THE SYSTEM US BUILT**。
 Layer 1 - Frontend   
 The entire UI is written in vanilla JavaScript, split across three files. state.js holds the single source of truth for the whole app, the user’s transaction data, chat history, collected evidence, and generated report, all live here.   
 screens.js contains one function per screen that builds HTML from that live state data.   
@@ -107,19 +107,19 @@ Layer 3 - Data
 Transaction data currently comes from a local mockTransactions.json file that mirrors what the real Bank Islam Be U API would return. That is temporarily used as an example. Generated dispute reports are saved to Supabase and retrievable by case ID. Wrong-transfer notifications are also logged to Supabase for audit trail purposes.
 
 Request flow  
-Every time the user sends a message, the frontend sends the complete conversation history — not just the latest message — to /api/chat. This is necessary because Gemini is stateless between calls and has no memory. The backend injects a system prompt telling Gemini it is DisputeAI and already knows the transaction details (amount, merchant, reference number, time), then forwards the full history to Gemini. The response comes back as plain text and is appended to state.chatHistory for the next call.
+Every time the user sends a message, the frontend sends the complete conversation history to /api/chat. This is necessary because Gemini is stateless between calls and has no memory. The backend injects a system prompt that tells Gemini it is DisputeAI and that it already knows the transaction details (amount, merchant, reference number, time), then forwards the full history to Gemini. The response comes back as plain text and is appended to state.chatHistory for the next call.
 
 
-** AI Tools used **  
-Google Gemini 2.0 Flash — conversational AI and report generation
-Used for two distinct tasks. In the dispute intake chat (Screen 5), Gemini acts as a guided interview assistant — it already knows the transaction details from the mock Be U data, asks targeted questions to collect the four key evidence facts (contact method, scam technique, scammer identity, and available screenshots), and keeps responses under three sentences. For report generation (Screen 6 → 7), Gemini receives the entire conversation history and is instructed at low temperature (0.1) to extract a structured JSON dispute report containing the case ID, fraud type, timeline, AI-generated summary, and evidence count. The conditional system_instruction design avoids a Gemini 400 error that occurs when a null prompt is sent.
+#### ** AI Tools used **    
+Google Gemini 2.0 Flash — conversational AI and report generation  
+Used for two distinct tasks. In the dispute intake chat, Gemini acts as a guided interview assistant. It already knows the transaction details from the mock Be U data, asks targeted questions to collect the four key evidence facts (contact method, scam technique, scammer identity, and available screenshots), and keeps responses to three sentences or fewer. For report generation, Gemini receives the entire conversation history and is instructed at low temperature to extract a structured JSON dispute report containing the case ID, fraud type, timeline, AI-generated summary, and evidence count. The conditional system_instruction design avoids a Gemini 400 error that occurs when a null prompt is sent.
 
-Google Cloud Vision API — screenshot OCR
-Used in a two-step pipeline when the user uploads a WhatsApp or other messaging screenshot. Vision’s TEXT_DETECTION feature extracts all raw text from the image — it handles small fonts, compressed JPEG artefacts, and overlapping UI elements better than a general vision model. The raw text is then passed to Gemini for intelligent interpretation, producing structured output: phone number, timestamp, platform, message content, scam keywords, scam type, confidence level, and specific red flags. This two-model approach produces more reliable evidence extraction than using Gemini Vision alone.
+Google Cloud Vision API — screenshot OCR  
+Used in a two-step pipeline when the user uploads a WhatsApp or other messaging screenshot. Vision’s TEXT_DETECTION feature extracts all raw text from the image. It handles small fonts, compressed JPEG artefacts, and overlapping UI elements better than a general vision model. The raw text is then passed to Gemini for intelligent interpretation, producing structured output: phone number, timestamp, platform, message content, scam keywords, scam type, confidence level, and specific red flags. This two-model approach produces more reliable evidence extraction than using Gemini Vision alone.
 
-Gemini (report) — structured JSON extraction
-A separate use of the Gemini API distinct from the chat function. The full conversation history is sent with a precise extraction prompt at temperature 0.1, asking Gemini to produce only a JSON object with no markdown fences. The parseGeminiJSON() helper strips any accidental code fences before parsing. If the JSON is malformed, a pre-built fallback report is returned instead so the demo never breaks.
+Gemini (report) — structured JSON extraction  
+A separate use of the Gemini API, distinct from the chat function. The full conversation history is sent with a precise extraction prompt, asking Gemini to produce only a JSON object with no markdown fences. The parseGeminiJSON() helper strips any accidental code fences before parsing. If the JSON is malformed, a pre-built fallback report is returned instead so the demo never breaks.
 
-Claude
-Claude was used as a reference tool during development — primarily to get quick answers on API integration, check syntax, and look up documentation faster than searching manually. It helped speed up some of the more repetitive parts of the build, such as structuring the Express routes and formatting the Supabase schema, but the overall system design, feature decisions, and project direction came from the team. We mainly used it as resource to consult.
+Claude  
+Claude was used as a reference tool during development — primarily to get quick answers on API integration, check syntax, and look up documentation faster than searching manually. It helped speed up some of the more repetitive parts of the build, such as structuring the Express routes and formatting the Supabase schema, but the overall system design, feature decisions, and project direction came from the team. We mainly used it as a resource to consult.
 
