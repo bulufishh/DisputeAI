@@ -1,4 +1,4 @@
-#### **STACK**   
+### **STACK**   
 Front end - Netlify (static)
 BAckend - Netlify functions (severless express)
 Ai chat - Google Gemni 2.0 Flash
@@ -6,7 +6,7 @@ OCR - Google cloud Vision API
 Database - Supabase
 
 
-#### **SETUP STEPS**   
+### **SETUP STEPS**   
 Prerequisite  
 - Node.js installed on your machine (v18 or above)
 
@@ -61,7 +61,7 @@ npm start
 
 
 
-#### **API ROUTES**
+### **API ROUTES**
 GET   /api/health --> checks all services are connected   
 GET   /api/transactions --> Mock Be U Transaction data    
 POST  /api/chat  --> Gemini AI conversation    
@@ -72,7 +72,7 @@ POST  /api/notify  --> Save wrong tarnsfer notification
 
 
 
-#### **Technology Used**
+### **Technology Used**
 Frontend    
 	•	Vanilla HTML, CSS, and JavaScript — no frameworks, no build step required  
 	•	jsPDF (CDN) — generates downloadable PDF dispute reports in the browser  
@@ -93,7 +93,7 @@ Netlify — hosts the frontend as static files and the backend as serverless fun
 
 
 
-#### **HOW THE SYSTEM IS BUILT**。
+### **HOW THE SYSTEM IS BUILT**
 Layer 1 - Frontend   
 The entire UI is written in vanilla JavaScript, split across three files. state.js holds the single source of truth for the whole app, the user’s transaction data, chat history, collected evidence, and generated report, all live here.   
 screens.js contains one function per screen that builds HTML from that live state data.   
@@ -110,7 +110,7 @@ Request flow
 Every time the user sends a message, the frontend sends the complete conversation history to /api/chat. This is necessary because Gemini is stateless between calls and has no memory. The backend injects a system prompt that tells Gemini it is DisputeAI and that it already knows the transaction details (amount, merchant, reference number, time), then forwards the full history to Gemini. The response comes back as plain text and is appended to state.chatHistory for the next call.
 
 
-#### **AI Tools used**    
+### **AI Tools used**    
 Google Gemini 2.0 Flash — conversational AI and report generation  
 Used for two distinct tasks. In the dispute intake chat, Gemini acts as a guided interview assistant. It already knows the transaction details from the mock Be U data, asks targeted questions to collect the four key evidence facts (contact method, scam technique, scammer identity, and available screenshots), and keeps responses to three sentences or fewer. For report generation, Gemini receives the entire conversation history and is instructed at low temperature to extract a structured JSON dispute report containing the case ID, fraud type, timeline, AI-generated summary, and evidence count. The conditional system_instruction design avoids a Gemini 400 error that occurs when a null prompt is sent.
 
