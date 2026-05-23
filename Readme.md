@@ -1,4 +1,4 @@
-**STACK**   
+## **STACK**   
 Front end - Netlify (static)
 BAckend - Netlify functions (severless express)
 Ai chat - Google Gemni 2.0 Flash
@@ -6,21 +6,20 @@ OCR - Google cloud Vision API
 Database - Supabase
 
 
-**SETUP steps**   
+**SETUP STEPS**   
 Prerequisite  
 - Node.js installed on your machine (v18 or above)
 
 Step 1 - clone or download the project  
-Place the disputeai/ folder on your machine  
-The structure should have frontend/, server/, netlify/, 
-and supabase/ inside it.
+Place the disputeai/ folder on your machine   
+The structure should have frontend/, server/, netlify/, and supabase/ inside it.
 
 Step 2 - Get your all four API Key  
-Geimini API 
-1. Go to https://ai.google.dev
-2. Sign in 
-3. Click Create API key
-4. Copy the key 
+Geimini API   
+1. Go to https://ai.google.dev  
+2. Sign in   
+3. Click Create API key  
+4. Copy the key   
 
 Google Cloud Vision API  
 1. Go to https://console.cloud.google.com
@@ -43,64 +42,69 @@ Step 3: Set up supabase databse
 
 Step 4: Add your API key
 Copy .env.example to .env at the project root and fill in your four keys:
-Open backend /.env file and add your key
-
+Open the backend /.env file and add your key
+```
 GEMINI_API_KEY= "_____"
-GOOGLE_VISION_KEY="_______"
-SUPABASE_URL=https://xxxx.supabase.co
-SUPABASE_KEY="_______"
+GOOGLE_VISION_KEY="_____"
+SUPABASE_URL = https://xxxx.supabase.co
+SUPABASE_KEY="_____"
 PORT=3000
-
+```
 
 Step 5: If you want to run locally   
 On terminal  
+```
 cd server  
 npm install  
-npm start  
+npm start
+```
 
 
 
 **API ROUTES**
-GET   /api/health --> checks all services are connected  
-GET   /api/transactions --> Mock Be U Transaction data  
-POST  /api/chat  --> Gemini AI conversation  
-POST  /api/report  --> generate + save dispute report  
-POST  /api/scan --> Google Vision OCR  
-POST  /api/notify  --> Save wrong tarnsfer notification  
-'GET   /api/case/:id --> Retrive case from supabase  
+GET   /api/health --> checks all services are connected   
+GET   /api/transactions --> Mock Be U Transaction data    
+POST  /api/chat  --> Gemini AI conversation    
+POST  /api/report  --> generate + save dispute report    
+POST  /api/scan --> Google Vision OCR    
+POST  /api/notify  --> Save wrong tarnsfer notification    
+'GET   /api/case/:id --> Retrive case from supabase    
 
 
 
 **Technology Used**
-Frontend  
-	•	Vanilla HTML, CSS, and JavaScript — no frameworks, no build step required
-	•	jsPDF (CDN) — generates downloadable PDF dispute reports in the browser
-	•	Google Fonts — Plus Jakarta Sans and JetBrains Mono
+Frontend    
+	•	Vanilla HTML, CSS, and JavaScript — no frameworks, no build step required  
+	•	jsPDF (CDN) — generates downloadable PDF dispute reports in the browser  
+	•	Google Fonts — Plus Jakarta Sans and JetBrains Mono  
 
 Backend  
-Node.js with Express — RESTful API server
-	•	serverless-http — wraps Express for deployment as a Netlify serverless function
-	•	node-fetch — makes HTTP requests from the server to external AI APIs
-	•	dotenv — loads environment variables from the .env file
+Node.js with Express — RESTful API server  
+	•	serverless-http — wraps Express for deployment as a Netlify serverless function  
+	•	node-fetch — makes HTTP requests from the server to external AI APIs  
+	•	dotenv — loads environment variables from the .env file  
 
-Database  
-	•	Supabase (PostgreSQL) — stores generated dispute cases and wrong-transfer notifications with full JSONB support for timeline and routing data
+Database   
+	•	Supabase (PostgreSQL) — stores generated dispute cases and wrong-transfer notifications with full JSONB support for timeline and routing data  
 
-Deployment  
-Netlify — hosts the frontend as static files and the backend as serverless functions from the same repository
-	•	GitHub — source control and continuous deployment trigger
+Deployment   
+Netlify — hosts the frontend as static files and the backend as serverless functions from the same repository  
+	•	GitHub — source control and continuous deployment trigger  
 
 
 
-**HOW THE SYSTEN US BUILT**。
-Layer 1 - Frontend  
-The entire UI is a state-driven single-page app written in vanilla JavaScript, split across three files. state.js holds the single source of truth for the whole app — the user’s transaction data, chat history, collected evidence, and generated report all live here. screens.js contains one function per screen that builds HTML from that live state data. app.js handles all user actions, API calls, and the boot sequence. There is no page reload at any point — navigating between screens re-renders the DOM in-place.
+**HOW THE SYSTEM US BUILT**。
+Layer 1 - Frontend   
+The entire UI is written in vanilla JavaScript, split across three files. state.js holds the single source of truth for the whole app, the user’s transaction data, chat history, collected evidence, and generated report, all live here.   
+screens.js contains one function per screen that builds HTML from that live state data.   
+app.js handles all user actions, API calls, and the boot sequence.   
 
-Layer 2 - Backend  
-The Express server is split into routes and helpers. Each of the six API endpoints has its own file in routes/ and calls only what it needs from helpers/. The Gemini helper centralises all AI calls with automatic retry-with-backoff on 429 rate limit errors — it reads the exact retry delay from Gemini’s response body and waits that long before retrying, up to three times per model, across three models. The OCR helper is a two-step pipeline: Google Cloud Vision extracts raw text from the uploaded screenshot first (purpose-built for reading small text and phone numbers in chat bubbles), then Gemini interprets that raw text to identify the scam type, contact details, and red flags.
+Layer 2 - Backend    
+The Express server is split into routes and helpers. Each of the six API endpoints has its own file in routes/ and calls only what it needs from helpers/.   
+The OCR helper is a two-step pipeline: Google Cloud Vision extracts raw text from the uploaded screenshot first (purpose-built for reading small text and phone numbers in chat bubbles), then Gemini interprets that raw text to identify the scam type, contact details, and red flags.
 
 Layer 3 - Data  
-Transaction data currently comes from a local mockTransactions.json file that mirrors what the real Bank Islam Be U API would return. Generated dispute reports are saved to Supabase and retrievable by case ID. Wrong-transfer notifications are also logged to Supabase for audit trail purposes.
+Transaction data currently comes from a local mockTransactions.json file that mirrors what the real Bank Islam Be U API would return. That is temporarily used as an example. Generated dispute reports are saved to Supabase and retrievable by case ID. Wrong-transfer notifications are also logged to Supabase for audit trail purposes.
 
 Request flow  
 Every time the user sends a message, the frontend sends the complete conversation history — not just the latest message — to /api/chat. This is necessary because Gemini is stateless between calls and has no memory. The backend injects a system prompt telling Gemini it is DisputeAI and already knows the transaction details (amount, merchant, reference number, time), then forwards the full history to Gemini. The response comes back as plain text and is appended to state.chatHistory for the next call.
