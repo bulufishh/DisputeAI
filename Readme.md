@@ -1,4 +1,4 @@
-**STACK**
+**STACK**。
 Front end - Netlify (static)
 BAckend - Netlify functions (severless express)
 Ai chat - Google Gemni 2.0 Flash
@@ -81,7 +81,7 @@ Netlify — hosts the frontend as static files and the backend as serverless fun
 
 
 
-** HOW THE SYSTEN US BUILT **
+**HOW THE SYSTEN US BUILT**。
 Layer 1 - Frontend 
 The entire UI is a state-driven single-page app written in vanilla JavaScript, split across three files. state.js holds the single source of truth for the whole app — the user’s transaction data, chat history, collected evidence, and generated report all live here. screens.js contains one function per screen that builds HTML from that live state data. app.js handles all user actions, API calls, and the boot sequence. There is no page reload at any point — navigating between screens re-renders the DOM in-place.
 
