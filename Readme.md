@@ -44,13 +44,13 @@ npm start
 
 
 API ROUTES
-GET   /api/health --> checks all services are connected
-GET   /api/transactions --> Mock Be U Transaction data
-POST  /api/chat  --> Gemini AI conversation
-POST  /api/report  --> generate + save dispute report
-POST  /api/scan --> Google Vision OCR
-POST  /api/notify  --> Save wrong tarnsfer notification
-'GET   /api/case/:id --> Retrive case from supabase
+GET   /api/health --> checks all services are connected  
+GET   /api/transactions --> Mock Be U Transaction data  
+POST  /api/chat  --> Gemini AI conversation  
+POST  /api/report  --> generate + save dispute report  
+POST  /api/scan --> Google Vision OCR  
+POST  /api/notify  --> Save wrong tarnsfer notification  
+'GET   /api/case/:id --> Retrive case from supabase  
 
 
 AI used in this project
