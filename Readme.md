@@ -110,7 +110,7 @@ Request flow
 Every time the user sends a message, the frontend sends the complete conversation history to /api/chat. This is necessary because Gemini is stateless between calls and has no memory. The backend injects a system prompt that tells Gemini it is DisputeAI and that it already knows the transaction details (amount, merchant, reference number, time), then forwards the full history to Gemini. The response comes back as plain text and is appended to state.chatHistory for the next call.
 
 
-#### ** AI Tools used **    
+#### **AI Tools used**    
 Google Gemini 2.0 Flash — conversational AI and report generation  
 Used for two distinct tasks. In the dispute intake chat, Gemini acts as a guided interview assistant. It already knows the transaction details from the mock Be U data, asks targeted questions to collect the four key evidence facts (contact method, scam technique, scammer identity, and available screenshots), and keeps responses to three sentences or fewer. For report generation, Gemini receives the entire conversation history and is instructed at low temperature to extract a structured JSON dispute report containing the case ID, fraud type, timeline, AI-generated summary, and evidence count. The conditional system_instruction design avoids a Gemini 400 error that occurs when a null prompt is sent.
 
