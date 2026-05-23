@@ -36,11 +36,11 @@ Step 2: Set up supabase databse
 Step 3: Add your API key
 Open backend /.env file and add your key
 
-Step 4: If you want to run locally 
-On terminal
-cd server
-npm install
-npm start
+Step 4: If you want to run locally   
+On terminal  
+cd server  
+npm install  
+npm start  
 
 
 API ROUTES
