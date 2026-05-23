@@ -11,7 +11,7 @@ Prerequisite
 - Node.js installed on your machine (v18 or above)
 
 Step 1 - clone or download the project  
-Place the disputeai/ folder on your machine. 
+Place the disputeai/ folder on your machine  
 The structure should have frontend/, server/, netlify/, 
 and supabase/ inside it.
 
