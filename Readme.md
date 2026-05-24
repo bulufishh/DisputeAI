@@ -1,9 +1,9 @@
 ### **STACK**   
-Front end - Netlify (static)
-BAckend - Netlify functions (severless express)
-Ai chat - Google Gemni 2.0 Flash
-OCR - Google cloud Vision API
-Database - Supabase
+Front end - Netlify (static)  
+BAckend - Netlify functions (severless express)  
+Ai chat - Google Gemni 2.0 Flash  
+OCR - Google cloud Vision API  
+Database - Supabase  
 
 
 ### **SETUP STEPS**   
